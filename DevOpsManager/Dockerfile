@@ -12,10 +12,15 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DevOpsManager/DevOpsManager.csproj", "DevOpsManager/"]
-RUN dotnet restore "./DevOpsManager/DevOpsManager.csproj"
+#COPY ["DevOpsManager/DevOpsManager.csproj", "DevOpsManager/"]
+#RUN dotnet restore "./DevOpsManager/DevOpsManager.csproj"
+#COPY . .
+#WORKDIR "/src/DevOpsManager"
+#RUN dotnet build "./DevOpsManager.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["DevOpsManager.csproj", "./"]
+RUN dotnet restore "./DevOpsManager.csproj"
 COPY . .
-WORKDIR "/src/DevOpsManager"
 RUN dotnet build "./DevOpsManager.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
