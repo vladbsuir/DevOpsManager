@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h2>Регистрация</h2>
+
+<form asp-action="Register" method="post">
+    <label>Имя пользователя:</label>
+    <input type="text" name="username" required />
+
+    <label>Пароль:</label>
+    <input type="password" name="password" required />
+
+    <label>Email:</label>
+    <input type="email" name="email" required />
+
+    <button type="submit">Зарегистрироваться</button>
+</form>
+
+<a href="/Account/Login">Уже есть аккаунт? Войти</a>

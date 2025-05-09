@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Вход";
+}
+
+<h2>Вход</h2>
+
+<form method="post" asp-controller="Account" asp-action="Login">
+    <div>
+        <label for="username">Имя пользователя</label>
+        <input type="text" id="username" name="username" required />
+    </div>
+    <div>
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required />
+    </div>
+    <button type="submit">Войти</button>
+</form>
+
+@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+{
+    <div style="color:red;">
+        <p>@ViewData["ErrorMessage"]</p>
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="color:red;">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+<div>
+    <p>Нет аккаунта? <a href="@Url.Action("Register", "Account")">Зарегистрироваться</a></p>
+</div>
