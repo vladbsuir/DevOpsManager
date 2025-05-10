@@ -63,24 +63,25 @@ public class HomeController : Controller
         return View(users);
     }
 
-    public IActionResult Projects()
+    public async Task<IActionResult> Projects()
     {
-        var userPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
-        ViewBag.UserPermissions = userPermissions; // Передаем разрешения в представление
-        return View();
+        ViewBag.UserPermissions = GetUserPermissions(User.Identity.Name);
+        // Получение всех проектов с владельцем
+        var projects = await _context.Projects
+            .Include(p => p.Owner)
+            .OrderBy(p => p.Name)
+            .ToListAsync();
+        return View(projects);
     }
 
+    // Перенаправление на контроллер микросервисов
     public IActionResult Microservices()
     {
-        var userPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
-        ViewBag.UserPermissions = userPermissions; // Передаем разрешения в представление
-        return View();
+        return RedirectToAction("Index", "Microservice"); // Перенаправляем на контроллер Microservice
     }
 
     public IActionResult Deploy()
     {
-        var userPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
-        ViewBag.UserPermissions = userPermissions; // Передаем разрешения в представление
-        return View();
+        return RedirectToAction("Index", "Deploy"); // Перенаправляем на контроллер Deploy
     }
 }

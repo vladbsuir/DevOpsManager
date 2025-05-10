@@ -64,8 +64,7 @@ namespace DevOpsManager.Controllers
         public IActionResult Register()
         {
             ViewBag.Roles = _context.Roles.ToList();
-            var userPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
-            ViewBag.UserPermissions = userPermissions; // Передаем разрешения в представление
+            ViewBag.UserPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
             return View();
         }
 

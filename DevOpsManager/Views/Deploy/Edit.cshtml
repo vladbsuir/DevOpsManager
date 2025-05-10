@@ -1,0 +1,56 @@
+﻿@model DevOpsManager.Models.Deployment
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Новый деплой" : "Редактирование деплоя";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="MicroserviceId">Микросервис:</label>
+        <select asp-for="MicroserviceId" asp-items="ViewBag.Microservices" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Version">Версия сборки:</label>
+        <input asp-for="Version" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DeployedAt">Дата и время деплоя:</label>
+        <input asp-for="DeployedAt" type="datetime-local" class="form-control"
+               value="@Model.DeployedAt.ToString("yyyy-MM-ddTHH:mm")" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Environment">Среда:</label>
+        <input asp-for="Environment" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DeployedBy">Развернул(а):</label>
+        <input asp-for="DeployedBy" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status">Статус:</label>
+        <input asp-for="Status" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RemoteLogsUrl">Ссылка на логи:</label>
+        <input asp-for="RemoteLogsUrl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+
+    @if (Model.Id != 0)
+    {
+        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Удалить деплой?')">Удалить</button>
+        </form>
+    }
+</form>

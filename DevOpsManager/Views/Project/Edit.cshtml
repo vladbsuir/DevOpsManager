@@ -1,0 +1,90 @@
+﻿@model DevOpsManager.Models.Project
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Создание проекта" : "Редактирование проекта";
+    var isEdit = Model.Id != 0;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Save" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Code"></label>
+        <input asp-for="Code" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="JiraUrl"></label>
+        <input asp-for="JiraUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfluenceUrl"></label>
+        <input asp-for="ConfluenceUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GitRepository"></label>
+        <input asp-for="GitRepository" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SlackChannel"></label>
+        <input asp-for="SlackChannel" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate"></label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Environment"></label>
+        <input asp-for="Environment" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DeploymentUrl"></label>
+        <input asp-for="DeploymentUrl" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OwnerId">Владелец</label>
+        <select asp-for="OwnerId" asp-items="ViewBag.Users" class="form-control"></select>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-success">Сохранить</button>
+
+        @if (isEdit)
+        {
+            <button type="submit" formaction="@Url.Action("DeleteConfirmed", new { id = Model.Id })"
+                    formmethod="post" class="btn btn-danger"
+                    onclick="return confirm('Вы уверены, что хотите удалить проект?');">
+                Удалить проект
+            </button>
+        }
+        <a asp-controller="Home" asp-action="Projects" class="btn btn-secondary">Назад</a>
+    </div>
+</form>

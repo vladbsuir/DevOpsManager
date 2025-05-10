@@ -1,0 +1,71 @@
+﻿@model List<DevOpsManager.Models.Deployment>
+@{
+    ViewData["Title"] = "Деплои";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <label for="projectFilter" class="mr-2">Проект:</label>
+        <select id="projectFilter" class="form-control" onchange="window.location.href=this.value;">
+            <option value="@Url.Action("Index", "Deploy", new { projectId = (int?)null, microserviceId = ViewBag.SelectedMicroserviceId })">Все проекты</option>
+            @foreach (var project in ViewBag.Projects as SelectList)
+            {
+                var selected = (project.Value == ViewBag.SelectedProjectId?.ToString()) ? "selected" : "";
+                <option value="@Url.Action("Index", "Deploy", new { projectId = project.Value, microserviceId = ViewBag.SelectedMicroserviceId })">
+                    @project.Text
+                </option>
+            }
+        </select>
+    </div>
+    <div class="form-group mr-2">
+        <label for="microserviceFilter" class="mr-2">Микросервис:</label>
+        <select id="microserviceFilter" class="form-control" onchange="window.location.href=this.value;">
+            <option value="@Url.Action("Index", "Deploy", new { projectId = ViewBag.SelectedProjectId, microserviceId = (int?)null })">Все микросервисы</option>
+            @foreach (var micro in ViewBag.Microservices as SelectList)
+            {
+                var selected = (micro.Value == ViewBag.SelectedMicroserviceId?.ToString()) ? "selected" : "";
+                <option value="@Url.Action("Index", "Deploy", new { projectId = ViewBag.SelectedProjectId, microserviceId = micro.Value })">
+                    @micro.Text
+                </option>
+            }
+        </select>
+    </div>
+    <a href="@Url.Action("Edit", "Deploy")" class="btn btn-success ml-3">Регистрация нового деплоя</a>
+</div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Микросервис</th>
+            <th>Проект</th>
+            <th>Среда</th>
+            <th>Версия</th>
+            <th>Развернул(а)</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.DeployedAt.ToString("g")</td>
+                <td>@d.Microservice.Name</td>
+                <td>@d.Microservice.Project.Name</td>
+                <td>@d.Environment</td>
+                <td>@d.Version</td>
+                <td>@d.DeployedBy</td>
+                <td>@d.Status</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Deploy", new { id = d.Id })" class="btn btn-sm btn-primary">Редактировать</a>
+                    <form asp-action="Delete" method="post" asp-route-id="@d.Id" style="display:inline;" onsubmit="return confirm('Удалить?')">
+                        <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
