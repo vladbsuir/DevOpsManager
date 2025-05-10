@@ -1,0 +1,28 @@
+﻿@model DevOpsManager.Models.User
+@{
+    ViewData["Title"] = "Личный кабинет";
+    var roles = ViewBag.Roles as List<DevOpsManager.Models.Role>;
+}
+
+<h2>Личный кабинет</h2>
+
+<form asp-action="Profile" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Имя пользователя</label>
+        <input type="text" name="name" class="form-control" value="@Model.Username" required readonly/>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Новый пароль (оставьте пустым, если не меняется)</label>
+        <input type="password" name="password" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Роль</label>
+            <p class="form-control-plaintext">@Model.Role?.Name</p>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>

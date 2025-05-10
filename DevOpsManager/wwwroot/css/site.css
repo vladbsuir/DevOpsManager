@@ -1,22 +1,78 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --primary-color: #205781;
+    --secondary-color-1: #4F959D;
+    --secondary-color-2: #98D2C0;
+    --secondary-color-3: #F6F8D5;
+    --text-color: #ffffff;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: var(--secondary-color-3);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.navbar {
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-brand,
+.nav-link,
+.navbar-text {
+    color: var(--text-color) !important;
+}
+
+    .nav-link:hover {
+        color: var(--secondary-color-2) !important;
+    }
+
+.btn-primary {
+    background-color: var(--secondary-color-1);
+    border-color: var(--secondary-color-1);
+}
+
+    .btn-primary:hover {
+        background-color: var(--secondary-color-2);
+        border-color: var(--secondary-color-2);
+    }
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 0;
+}
+
+    footer a {
+        color: var(--secondary-color-2);
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--secondary-color-1);
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }

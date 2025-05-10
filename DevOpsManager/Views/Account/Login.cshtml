@@ -2,37 +2,43 @@
     ViewData["Title"] = "Вход";
 }
 
-<h2>Вход</h2>
+<h2 class="mb-4">Вход</h2>
 
-<form method="post" asp-controller="Account" asp-action="Login">
-    <div>
-        <label for="username">Имя пользователя</label>
-        <input type="text" id="username" name="username" required />
-    </div>
-    <div>
-        <label for="password">Пароль</label>
-        <input type="password" id="password" name="password" required />
-    </div>
-    <button type="submit">Войти</button>
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="post" asp-controller="Account" asp-action="Login">
+            <div class="mb-3">
+                <label for="username" class="form-label">Имя пользователя</label>
+                <input type="text" id="username" name="username" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" id="password" name="password" class="form-control" required />
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </div>
+        </form>
 
-@if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
-{
-    <div style="color:red;">
-        <p>@ViewData["ErrorMessage"]</p>
-    </div>
-}
-
-@if (!ViewData.ModelState.IsValid)
-{
-    <div style="color:red;">
-        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
         {
-            <p>@error.ErrorMessage</p>
+            <div class="alert alert-danger mt-3">
+                @ViewData["ErrorMessage"]
+            </div>
         }
-    </div>
-}
 
-<div>
-    <p>Нет аккаунта? <a href="@Url.Action("Register", "Account")">Зарегистрироваться</a></p>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger mt-3">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <div class="mt-3">
+            <p>Нет аккаунта? <a href="@Url.Action("Register", "Account")">Зарегистрироваться</a></p>
+        </div>
+    </div>
 </div>
