@@ -1,17 +1,21 @@
 ﻿@model DevOpsManager.Models.User
 @{
     ViewData["Title"] = "Личный кабинет";
-    var roles = ViewBag.Roles as List<DevOpsManager.Models.Role>;
 }
 
+@if (TempData != null && TempData.Count >0 && TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
 <h2>Личный кабинет</h2>
-
 <form asp-action="Profile" method="post">
     <input type="hidden" name="id" value="@Model.Id" />
 
     <div class="mb-3">
         <label class="form-label">Имя пользователя</label>
-        <input type="text" name="name" class="form-control" value="@Model.Username" required readonly/>
+        <input type="text" class="form-control" value="@Model.Username" readonly />
     </div>
 
     <div class="mb-3">
@@ -20,8 +24,48 @@
     </div>
 
     <div class="mb-3">
+        <label class="form-label">ФИО</label>
+        <input type="text" name="fullName" class="form-control" value="@Model.FullName" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" value="@Model.Email" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Slack</label>
+        <input type="text" name="slackHandle" class="form-control" value="@Model.SlackHandle" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Телефон</label>
+        <input type="text" name="phoneNumber" class="form-control" value="@Model.PhoneNumber" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Должность</label>
+        <input type="text" name="position" class="form-control" value="@Model.Position" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Отдел</label>
+        <input type="text" name="department" class="form-control" value="@Model.Department" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Локация</label>
+        <input type="text" name="location" class="form-control" value="@Model.Location" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Дата рождения</label>
+        <input type="date" name="birthDate" class="form-control" value="@Model.BirthDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="mb-3">
         <label class="form-label">Роль</label>
-            <p class="form-control-plaintext">@Model.Role?.Name</p>
+        <p class="form-control-plaintext">@Model.Role?.Name</p>
     </div>
 
     <button type="submit" class="btn btn-primary">Сохранить</button>

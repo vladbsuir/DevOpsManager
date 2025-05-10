@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DevOpsManager.Migrations
 {
     /// <inheritdoc />
-    public partial class AddRolesAndUserRelation : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +20,8 @@ namespace DevOpsManager.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Permissions = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -35,7 +38,15 @@ namespace DevOpsManager.Migrations
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LastLoginAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FullName = table.Column<string>(type: "text", nullable: false),
+                    SlackHandle = table.Column<string>(type: "text", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
+                    Position = table.Column<string>(type: "text", nullable: false),
+                    Department = table.Column<string>(type: "text", nullable: false),
+                    Location = table.Column<string>(type: "text", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,6 +129,18 @@ namespace DevOpsManager.Migrations
                         principalTable: "Microservices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name", "Permissions" },
+                values: new object[,]
+                {
+                    { 1, "Администратор", 63 },
+                    { 2, "DevOps-инженер", 62 },
+                    { 3, "Менеджер", 22 },
+                    { 4, "Разработчик", 28 },
+                    { 5, "Гость", 20 }
                 });
 
             migrationBuilder.CreateIndex(

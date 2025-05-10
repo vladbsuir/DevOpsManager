@@ -5,13 +5,14 @@
 
 <h2 class="mb-4">Пользователи</h2>
 
-<table class="table table-bordered table-hover">
+<table class="table table-bordered table-hover" id="usersTable">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
-            <th>Имя пользователя</th>
+            <th><a href="javascript:void(0);" onclick="sortTable(0)">Имя</a></th>
+            <th><a href="javascript:void(0);" onclick="sortTable(1)">ФИО</a></th>
             <th>Email</th>
-            <th>Роль</th>
+            <th>Slack</th>
+            <th><a href="javascript:void(0);" onclick="sortTable(4)">Роль</a></th>
             <th>Дата создания</th>
             <th>Последний вход</th>
             <th>Действия</th>
@@ -21,19 +22,53 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.Id</td>
                 <td>@user.Username</td>
-                <td>@user.Email</td>
+                <td>@user.FullName</td> <!-- Добавляем ФИО -->
+                <td>
+                    @if (!string.IsNullOrEmpty(user.Email))
+                    {
+                        <a href="mailto:@user.Email">@user.Email</a>
+                    }
+                </td>
+                <td>
+                    @if (!string.IsNullOrEmpty(user.SlackHandle))
+                    {
+                        <a href="https://slack.com/app_redirect?channel=@(user.SlackHandle.TrimStart('@'))" target="_blank">@user.SlackHandle</a>
+                    }
+                </td>
                 <td>@user.Role?.Name</td>
                 <td>@user.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
                 <td>@(user.LastLoginAt?.ToString("dd.MM.yyyy HH:mm") ?? "—")</td>
                 <td>
-                    <a asp-controller="Account" asp-action="Profile" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary me-2">Редактировать</a>
-                    <form asp-controller="Account" asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
-                    </form>
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Account" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary" title="Редактировать">&#9998;</a>
+                        <form asp-controller="Account" asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline" onsubmit="return confirm('Вы уверены, что хотите удалить этого пользователя?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Удалить">&#10060;</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    function sortTable(columnIndex) {
+        const table = document.getElementById("usersTable");
+        const rows = Array.from(table.rows).slice(1); // Все строки, кроме заголовка
+        const sortedRows = rows.sort((a, b) => {
+            const aText = a.cells[columnIndex].innerText.toLowerCase();
+            const bText = b.cells[columnIndex].innerText.toLowerCase();
+            return aText.localeCompare(bText);
+        });
+
+        // Переставляем строки в таблице
+        sortedRows.forEach(row => table.appendChild(row));
+    }
+
+
+    // Сортировка по умолчанию по имени пользователя (индекс 1)
+    document.addEventListener('DOMContentLoaded', function () {
+        sortTable(1);
+    });
+</script>
