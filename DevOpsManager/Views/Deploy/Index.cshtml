@@ -5,6 +5,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
+
 <div class="form-inline mb-3">
     <div class="form-group mr-2">
         <label for="projectFilter" class="mr-2">Проект:</label>
@@ -32,7 +33,9 @@
             }
         </select>
     </div>
-    <a href="@Url.Action("Edit", "Deploy")" class="btn btn-success ml-3">Регистрация нового деплоя</a>
+    <div class="text-end mb-3">
+        <a asp-controller="Deploy" asp-action="Edit" asp-route-id="0" class="btn btn-success">Новый микросервис</a>
+    </div>
 </div>
 
 <table class="table table-bordered table-striped">
@@ -60,7 +63,7 @@
                 <td>@d.DeployedBy</td>
                 <td>@d.Status</td>
                 <td>
-                    <a href="@Url.Action("Edit", "Deploy", new { id = d.Id })" class="btn btn-sm btn-primary">Редактировать</a>
+                    <a asp-controller="Deploy" asp-action="Edit" asp-route-id="@d.Id" class="btn btn-sm btn-primary">Редактировать</a>
                     <form asp-action="Delete" method="post" asp-route-id="@d.Id" style="display:inline;" onsubmit="return confirm('Удалить?')">
                         <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
                     </form>

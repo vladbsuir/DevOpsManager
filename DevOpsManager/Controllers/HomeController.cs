@@ -32,8 +32,20 @@ public class HomeController : Controller
     }
 
     // Главная страница с доступными разрешениями
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        // Получаем количество записей в ключевых таблицах
+        var totalUsers = await _context.Users.CountAsync();
+        var totalProjects = await _context.Projects.CountAsync();
+        var totalMicroservices = await _context.Microservices.CountAsync();
+        var totalDeployments = await _context.Deployments.CountAsync();
+
+        // Передаём статистику в ViewBag
+        ViewBag.TotalUsers = totalUsers;
+        ViewBag.TotalProjects = totalProjects;
+        ViewBag.TotalMicroservices = totalMicroservices;
+        ViewBag.TotalDeployments = totalDeployments;
+
         var userPermissions = GetUserPermissions(User.Identity.Name); // Получаем разрешения пользователя
         ViewBag.UserPermissions = userPermissions; // Передаем разрешения в представление
         return View();
